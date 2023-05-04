@@ -1,5 +1,6 @@
 #load "../../common.cake"
 
+
 var TARGET = Argument ("t", Argument ("target", "Default"));
 
 var IOS_PODS = new List<string> {
@@ -66,7 +67,7 @@ Task ("externals").IsDependentOn ("externals-base")
 Task ("clean").IsDependentOn ("clean-base").Does (() => 
 {
 	if (DirectoryExists ("./externals/"))
-		DeleteDirectory ("./externals/", true);
+		DeleteDirectory ("./externals/", new DeleteDirectorySettings{ Recursive = true });
 });
 
 SetupXamarinBuildTasks (buildSpec, Tasks, Task);

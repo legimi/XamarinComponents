@@ -1,10 +1,10 @@
 
-#addin nuget:?package=Cake.XCode&version=4.2.0
-#addin nuget:?package=Cake.Xamarin.Build&version=4.1.2
-#addin nuget:?package=Cake.Xamarin&version=3.0.2
-#addin nuget:?package=Cake.FileHelpers&version=3.2.1
-#addin nuget:?package=Cake.Yaml&version=3.1.1&loadDependencies=true
-#addin nuget:?package=Cake.Json&version=4.0.0&loadDependencies=true
+#addin nuget:?package=Cake.XCode
+#addin nuget:?package=Cake.Xamarin.Build
+#addin nuget:?package=Cake.Xamarin
+#addin nuget:?package=Cake.FileHelpers
+#addin nuget:?package=Cake.Yaml&loadDependencies=true
+#addin nuget:?package=Cake.Json&loadDependencies=true
 
 public enum TargetOS {
 	Windows,
@@ -32,10 +32,7 @@ void BuildXCodeFatLibrary_iOS(FilePath xcodeProject, string target, string libra
 	workingDirectory = workingDirectory ?? Directory("./externals/");
 
 	var output = string.Format("lib{0}.a", libraryTitle);
-	var i386 = string.Format("lib{0}-i386.a", libraryTitle);
 	var x86_64 = string.Format("lib{0}-x86_64.a", libraryTitle);
-	var armv7 = string.Format("lib{0}-armv7.a", libraryTitle);
-	var armv7s = string.Format("lib{0}-armv7s.a", libraryTitle);
 	var arm64 = string.Format("lib{0}-arm64.a", libraryTitle);
 
 	var buildArch = new Action<string, string, FilePath>((sdk, arch, dest) => {
@@ -59,14 +56,11 @@ void BuildXCodeFatLibrary_iOS(FilePath xcodeProject, string target, string libra
 		}
 	});
 
-	buildArch("iphonesimulator", "i386", workingDirectory.CombineWithFilePath(i386));
 	buildArch("iphonesimulator", "x86_64", workingDirectory.CombineWithFilePath(x86_64));
 
-	buildArch("iphoneos", "armv7", workingDirectory.CombineWithFilePath(armv7));
-	buildArch("iphoneos", "armv7s", workingDirectory.CombineWithFilePath(armv7s));
 	buildArch("iphoneos", "arm64", workingDirectory.CombineWithFilePath(arm64));
 
-	RunLipoCreate(workingDirectory, fatLibrary, i386, x86_64, armv7, armv7s, arm64);
+	RunLipoCreate(workingDirectory, fatLibrary, x86_64, arm64);
 }
 
 void BuildXCodeFatLibrary_tvOS(FilePath xcodeProject, string target, string libraryTitle = null, FilePath fatLibrary = null, DirectoryPath workingDirectory = null, string targetFolderName = null, Dictionary<string, string> buildSettings = null)
@@ -120,14 +114,11 @@ void BuildXCodeFatLibrary_macOS(FilePath xcodeProject, string target, string lib
 		return;
 	}
 
-	// NOTE: 'i386' is no longer supported
-
 	libraryTitle = libraryTitle ?? target;
 	fatLibrary = fatLibrary ?? string.Format("lib{0}.a", libraryTitle);
 	workingDirectory = workingDirectory ?? Directory("./externals/");
 
 	var output = string.Format("lib{0}.a", libraryTitle);
-	// var i386 = string.Format("lib{0}-i386.a", libraryTitle);
 	var x86_64 = string.Format("lib{0}-x86_64.a", libraryTitle);
 
 	var buildArch = new Action<string, string, FilePath>((sdk, arch, dest) => {
@@ -152,10 +143,8 @@ void BuildXCodeFatLibrary_macOS(FilePath xcodeProject, string target, string lib
 	});
 
 	buildArch("macosx", "x86_64", workingDirectory.CombineWithFilePath(x86_64));
-	// buildArch("macosx", "i386", workingDirectory.CombineWithFilePath(i386));
 
 	RunLipoCreate(workingDirectory, fatLibrary, x86_64);
-	// RunLipoCreate(workingDirectory, fatLibrary, x86_64, i386);
 }
 
 void BuildXCode (FilePath project, string target, string libraryTitle, DirectoryPath workingDirectory, TargetOS os, Dictionary<string, string> buildSettings = null)
@@ -168,10 +157,7 @@ void BuildXCode (FilePath project, string target, string libraryTitle, Directory
 	var fatLibrary = string.Format("lib{0}.a", libraryTitle);
 
 	var output = string.Format ("lib{0}.a", libraryTitle);
-	var i386 = string.Format ("lib{0}-i386.a", libraryTitle);
 	var x86_64 = string.Format ("lib{0}-x86_64.a", libraryTitle);
-	var armv7 = string.Format ("lib{0}-armv7.a", libraryTitle);
-	var armv7s = string.Format ("lib{0}-armv7s.a", libraryTitle);
 	var arm64 = string.Format ("lib{0}-arm64.a", libraryTitle);
 	
 	var buildArch = new Action<string, string, FilePath> ((sdk, arch, dest) => {
@@ -191,22 +177,18 @@ void BuildXCode (FilePath project, string target, string libraryTitle, Directory
 	
 	if (os == TargetOS.Mac) {
 		// not supported anymore
-		// buildArch ("macosx", "i386", workingDirectory.CombineWithFilePath (i386));
 		buildArch ("macosx", "x86_64", workingDirectory.CombineWithFilePath (x86_64));
 		
 		if (!FileExists (workingDirectory.CombineWithFilePath (fatLibrary))) {
 			RunLipoCreate (workingDirectory, fatLibrary, x86_64);
 		}
 	} else if (os == TargetOS.iOS) {
-		buildArch ("iphonesimulator", "i386", workingDirectory.CombineWithFilePath (i386));
 		buildArch ("iphonesimulator", "x86_64", workingDirectory.CombineWithFilePath (x86_64));
 		
-		buildArch ("iphoneos", "armv7", workingDirectory.CombineWithFilePath (armv7));
-		buildArch ("iphoneos", "armv7s", workingDirectory.CombineWithFilePath (armv7s));
 		buildArch ("iphoneos", "arm64", workingDirectory.CombineWithFilePath (arm64));
 		
 		if (!FileExists (workingDirectory.CombineWithFilePath (fatLibrary))) {
-			RunLipoCreate (workingDirectory, fatLibrary, i386, x86_64, armv7, armv7s, arm64);
+			RunLipoCreate (workingDirectory, fatLibrary, x86_64, arm64);
 		}
 	} else if (os == TargetOS.tvOS) {
 		buildArch ("appletvsimulator", "x86_64", workingDirectory.CombineWithFilePath (x86_64));
@@ -230,10 +212,7 @@ void BuildDynamicXCode (FilePath project, string target, string libraryTitle, Di
 	var fatLibraryPath = workingDirectory.Combine (fatLibrary);
 
 	var output = (DirectoryPath)string.Format ("{0}.framework", libraryTitle);
-	var i386 = (DirectoryPath)string.Format ("{0}-i386.framework", libraryTitle);
 	var x86_64 = (DirectoryPath)string.Format ("{0}-x86_64.framework", libraryTitle);
-	var armv7 = (DirectoryPath)string.Format ("{0}-armv7.framework", libraryTitle);
-	var armv7s = (DirectoryPath)string.Format ("{0}-armv7s.framework", libraryTitle);
 	var arm64 = (DirectoryPath)string.Format ("{0}-arm64.framework", libraryTitle);
 	
 	var buildArch = new Action<string, string, DirectoryPath> ((sdk, arch, dest) => {
@@ -260,20 +239,14 @@ void BuildDynamicXCode (FilePath project, string target, string libraryTitle, Di
 				x86_64.CombineWithFilePath (libraryTitle));
 		}
 	} else if (os == TargetOS.iOS) {
-		buildArch ("iphonesimulator", "i386", workingDirectory.Combine (i386));
 		buildArch ("iphonesimulator", "x86_64", workingDirectory.Combine (x86_64));
 		
-		buildArch ("iphoneos", "armv7", workingDirectory.Combine (armv7));
-		buildArch ("iphoneos", "armv7s", workingDirectory.Combine (armv7s));
 		buildArch ("iphoneos", "arm64", workingDirectory.Combine (arm64));
 		
 		if (!DirectoryExists (fatLibraryPath)) {
 			CopyDirectory (workingDirectory.Combine (arm64), fatLibraryPath);
 			RunLipoCreate (workingDirectory, fatLibrary.CombineWithFilePath (libraryTitle), 
-				i386.CombineWithFilePath (libraryTitle),
 				x86_64.CombineWithFilePath (libraryTitle),
-				armv7.CombineWithFilePath (libraryTitle),
-				armv7s.CombineWithFilePath (libraryTitle),
 				arm64.CombineWithFilePath (libraryTitle));
 		}
 	} else if (os == TargetOS.tvOS) {
