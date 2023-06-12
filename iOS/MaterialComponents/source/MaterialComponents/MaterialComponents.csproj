@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net7.0;net7.0-ios</TargetFrameworks>
+    <TargetFramework>net7.0-ios</TargetFramework>
     <ImplicitUsings>true</ImplicitUsings>
     <IsBindingProject>true</IsBindingProject>
   </PropertyGroup>
