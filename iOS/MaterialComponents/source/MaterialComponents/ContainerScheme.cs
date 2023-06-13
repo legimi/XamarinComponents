@@ -43,7 +43,7 @@ namespace MaterialComponents {
 		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 		static readonly IntPtr class_ptr = Class.GetHandle ("MDCContainerScheme");
 		
-		public override IntPtr ClassHandle { get { return class_ptr; } }
+		public override NativeHandle ClassHandle { get { return class_ptr; } }
 		
 		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
