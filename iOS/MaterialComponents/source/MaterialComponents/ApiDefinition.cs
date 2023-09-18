@@ -1855,10 +1855,10 @@ namespace MaterialComponents
         UIColor GetButtonsTitleColor(UIControlState state);
 
         [Export("rectForLeadingBarButtonItem:inCoordinateSpace:")]
-        CGRect RectForLeadingBarButtonItem(UIBarButtonItem item, UICoordinateSpace coordinateSpace);
+        CGRect RectForLeadingBarButtonItem(UIBarButtonItem item, IUICoordinateSpace coordinateSpace);
 
         [Export("rectForTrailingBarButtonItem:inCoordinateSpace:")]
-        CGRect RectForTrailingBarButtonItem(UIBarButtonItem item, UICoordinateSpace coordinateSpace);
+        CGRect RectForTrailingBarButtonItem(UIBarButtonItem item, IUICoordinateSpace coordinateSpace);
 
         [Export("observeNavigationItem:")]
         void ObserveNavigationItem(UINavigationItem navigationItem);
@@ -2700,7 +2700,7 @@ namespace MaterialComponents
         Action<ButtonBar, UITraitCollection> TraitCollectionDidChangeBlock { get; set; }
 
         [Export("rectForItem:inCoordinateSpace:")]
-        CGRect RectForItem(UIBarButtonItem item, UICoordinateSpace coordinateSpace);
+        CGRect RectForItem(UIBarButtonItem item, IUICoordinateSpace coordinateSpace);
 
         [Export("setButtonsTitleFont:forState:")]
         void SetButtonsTitleFont([NullAllowed] UIFont font, UIControlState state);

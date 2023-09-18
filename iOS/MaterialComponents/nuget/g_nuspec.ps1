@@ -6,12 +6,12 @@ foreach ($file in $files) {
   $targetPath = ""
   if ($relativePath.EndsWith("/Info.plist")) {
     $path = $relativePath.Replace("/Info.plist", "")
-    $targetPath = "lib/net7.0-ios16.2/MaterialComponents.resources/$path"
+    $targetPath = "lib/net7.0-ios/MaterialComponents.resources/$path"
   }
   else {
     $pathWithoutFileName = $relativePath.Replace($file.Name, "")
     $path = $pathWithoutFileName.Substring(0, $path.Length - 1)
-    $targetPath = "lib/net7.0-ios16.2/MaterialComponents.resources/$path"
+    $targetPath = "lib/net7.0-ios/MaterialComponents.resources/$path"
   }
   $output = "<file src=`"../source/MaterialComponents/bin/Release/net7.0-ios/MaterialComponents.resources/$relativePath`" target=`"$targetPath`" />"
   Write-Output $output
