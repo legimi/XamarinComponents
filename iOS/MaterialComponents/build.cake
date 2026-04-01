@@ -4,11 +4,18 @@
 var TARGET = Argument ("t", Argument ("target", "Default"));
 
 var IOS_PODS = new List<string> {
-	"platform :ios, '9.0'",
+	"platform :ios, '15.0'",
 	"install! 'cocoapods', :integrate_targets => false",
 	"use_frameworks!",
 	"target 'Xamarin' do",
 	"pod 'MaterialComponents', '92.0.0'",
+	"end",
+	"post_install do |installer|",
+	"  installer.pods_project.targets.each do |target|",
+	"    target.build_configurations.each do |config|",
+	"      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'",
+	"    end",
+	"  end",
 	"end",
 };
 
@@ -56,12 +63,12 @@ Task ("externals").IsDependentOn ("externals-base")
 
 	CocoaPodInstall ("./externals", new CocoaPodInstallSettings { NoIntegrate = true });
 
-	BuildDynamicXCode ("./Pods/Pods.xcodeproj", "MotionInterchange", "MotionInterchange", "./externals/", TargetOS.iOS);
-	BuildDynamicXCode ("./Pods/Pods.xcodeproj", "MDFInternationalization", "MDFInternationalization", "./externals/", TargetOS.iOS);
-	BuildDynamicXCode ("./Pods/Pods.xcodeproj", "MotionTransitioning", "MotionTransitioning", "./externals/", TargetOS.iOS);
-	BuildDynamicXCode ("./Pods/Pods.xcodeproj", "MDFTextAccessibility", "MDFTextAccessibility", "./externals/", TargetOS.iOS);
-	BuildDynamicXCode ("./Pods/Pods.xcodeproj", "MaterialComponents", "MaterialComponents", "./externals/", TargetOS.iOS);
-	BuildDynamicXCode ("./Pods/Pods.xcodeproj", "MotionAnimator", "MotionAnimator", "./externals/", TargetOS.iOS);
+	BuildDynamicXCode_XCFramework ("./Pods/Pods.xcodeproj", "MotionInterchange", "MotionInterchange", "./externals/", TargetOS.iOS);
+	BuildDynamicXCode_XCFramework ("./Pods/Pods.xcodeproj", "MDFInternationalization", "MDFInternationalization", "./externals/", TargetOS.iOS);
+	BuildDynamicXCode_XCFramework ("./Pods/Pods.xcodeproj", "MotionTransitioning", "MotionTransitioning", "./externals/", TargetOS.iOS);
+	BuildDynamicXCode_XCFramework ("./Pods/Pods.xcodeproj", "MDFTextAccessibility", "MDFTextAccessibility", "./externals/", TargetOS.iOS);
+	BuildDynamicXCode_XCFramework ("./Pods/Pods.xcodeproj", "MaterialComponents", "MaterialComponents", "./externals/", TargetOS.iOS);
+	BuildDynamicXCode_XCFramework ("./Pods/Pods.xcodeproj", "MotionAnimator", "MotionAnimator", "./externals/", TargetOS.iOS);
 });
 
 Task ("clean").IsDependentOn ("clean-base").Does (() => 

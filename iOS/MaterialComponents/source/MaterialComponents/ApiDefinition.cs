@@ -5928,12 +5928,6 @@ namespace MaterialComponents
 
         [Export("scrollViewDidScroll:")]
         void ScrollViewDidScroll(UIScrollView scrollView);
-
-        [Export("scrollViewDidEndDecelerating:")]
-        void ScrollViewDidEndDecelerating(UIScrollView scrollView);
-
-        [Export("scrollViewDidEndScrollingAnimation:")]
-        void ScrollViewDidEndScrollingAnimation(UIScrollView scrollView);
     }
 
     [DisableDefaultCtor]
