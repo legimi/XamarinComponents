@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net7.0-ios</TargetFramework>
+    <TargetFramework>net9.0-ios</TargetFramework>
     <ImplicitUsings>true</ImplicitUsings>
     <IsBindingProject>true</IsBindingProject>
   </PropertyGroup>
@@ -11,33 +11,31 @@
     <ObjcBindingCoreSource Include="Structs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <NativeReference Include="..\..\externals\MaterialComponents.framework">
+    <NativeReference Include="..\..\externals\MaterialComponents.xcframework">
       <Kind>Framework</Kind>
       <Frameworks>CoreGraphics QuartzCore</Frameworks>
       <ForceLoad>True</ForceLoad>
       <LinkerFlags>-ObjC</LinkerFlags>
     </NativeReference>
-    <NativeReference Include="..\..\externals\MDFInternationalization.framework">
+    <NativeReference Include="..\..\externals\MDFInternationalization.xcframework">
       <Kind>Framework</Kind>
       <ForceLoad>True</ForceLoad>
     </NativeReference>
-    <NativeReference Include="..\..\externals\MDFTextAccessibility.framework">
+    <NativeReference Include="..\..\externals\MDFTextAccessibility.xcframework">
       <Kind>Framework</Kind>
       <ForceLoad>True</ForceLoad>
     </NativeReference>
-    <NativeReference Include="..\..\externals\MotionAnimator.framework">
+    <NativeReference Include="..\..\externals\MotionAnimator.xcframework">
       <Kind>Framework</Kind>
       <ForceLoad>True</ForceLoad>
     </NativeReference>
-    <NativeReference Include="..\..\externals\MotionInterchange.framework">
+    <NativeReference Include="..\..\externals\MotionInterchange.xcframework">
       <Kind>Framework</Kind>
       <ForceLoad>True</ForceLoad>
     </NativeReference>
-    <NativeReference Include="..\..\externals\MotionTransitioning.framework">
+    <NativeReference Include="..\..\externals\MotionTransitioning.xcframework">
       <Kind>Framework</Kind>
       <ForceLoad>True</ForceLoad>
-      <LinkerFlags></LinkerFlags>
-      <Frameworks></Frameworks>
     </NativeReference>
   </ItemGroup>
 </Project>
